@@ -3,9 +3,11 @@ import { useState } from 'react';
 
 const UserForm = () => {
     const [input, setInput] = useState('');
-    console.log(input)
+    const [inputList, setInputList] = useState([]);
     const addingList = (e) => {
         e.preventDefault();
+        setInputList([...inputList, input]);
+        console.log(inputList);
     }
     return (
         <form action="">
