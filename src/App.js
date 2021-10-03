@@ -1,38 +1,52 @@
 import realtime from './firebase.js'
 import UserForm from './UserForm.js';
 import DisplayList from './DisplayList.js';
-import { ref, onValue } from 'firebase/database';
 import { useState, useEffect } from 'react';
+import { ref, onValue } from 'firebase/database';
+
 import './App.css';
 
 function App() {
-  const [input, setInput] = useState('');
+  const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
+  const [cardList, setCardList] = useState([])
 
   useEffect(() => {
     const dbRef = ref(realtime);
+
     onValue(dbRef, (snapshot) => {
       const myList = snapshot.val();
-      console.log(myList);
-    })
-  }, [])
+      const newArray = [];
+
+      for (let item in myList) {
+        const listObj = {
+          key: item,
+          toDo: myList[item]
+        }
+        newArray.push(listObj);
+      }
+      setInputList(newArray);
+    });
+  }, []);
 
   return (
     <div className="App">
       <header className="">
         <h1>Daily Log App</h1>
         <UserForm
-          userInput={setInput}
-          addToList={setInputList}
+          setUserInput={setUserInput}
+          setInputList={setInputList}
           inputList={inputList}
-          input={input}
+          userInput={userInput}
         />
       </header>
       <main>
         <section className="list-container">
           <ul>
+            <span>how many:{inputList.length}</span>
             <DisplayList
               inputList={inputList}
+            // setInputList={setInputList}
             />
           </ul>
         </section>

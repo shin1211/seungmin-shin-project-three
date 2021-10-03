@@ -1,15 +1,23 @@
+import realtime from './firebase';
+import { ref, remove } from 'firebase/database'
+
 
 const DisplayList = (props) => {
-	// console.log(props.inputList)
-
+	const delList = (key) => {
+		const specificData = ref(realtime, key);
+		remove(specificData);
+	}
 	return (
-		props.inputList.map((res, index) => {
+		props.inputList.map(res => {
+
 			return (
-				<li key={index}>{res} <button onClick={() => { console.log('clicked') }}>check</button></li>
+				<li key={res.key}>
+					<p>{res.toDo}</p>
+					<button onClick={() => delList(res.key)}>Del</button>
+				</li >
 			)
 		})
 	)
-
 }
 
 
