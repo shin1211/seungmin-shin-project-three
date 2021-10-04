@@ -215,3 +215,39 @@ template {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+
+html {
+  font-size: 125%;
+}
+
+.wrapper {
+  max-width: 1200px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ul {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+}
+
+ul li {
+  display: flex;
+}
+
+button {
+  margin-left: 1rem;
+}
+
+ul.old-list {
+  border: 1px solid blue;
+}

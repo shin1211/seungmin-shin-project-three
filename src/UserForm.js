@@ -7,7 +7,7 @@ const UserForm = (props) => {
     e.preventDefault();
 
     if (props.userInput) {
-      const dbRef = ref(realtime);
+      const dbRef = ref(realtime, 'currentList');
       push(dbRef, props.userInput);
       props.setUserInput('');
     } else {
