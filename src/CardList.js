@@ -1,21 +1,13 @@
 
 const CardList = (props) => {
-	// const [oldList, setOldList] = useState('');
-
-	// console.log(props.list.toDo);
-
-	// props.list.forEach(res => console.log(res.toDo))
-
-	// return null
 
 	return (
-
 		<li >
 			<ul className="old-list">
+				<h3>Date need to be updated</h3>
 				{props.list.map(res => (<li key={res.key}>{res.toDo}</li>))}
 			</ul>
 		</li>
-
 	)
 }
 

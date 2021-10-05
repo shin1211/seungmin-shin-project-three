@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import { ref, onValue, push, remove } from 'firebase/database';
 
 import './App.css';
+import HeaderTemp from './HeaderTemp.js';
+import ListSection from './ListSection.js';
 
 function App() {
   const [userInput, setUserInput] = useState('');
@@ -13,6 +15,7 @@ function App() {
   const [cardList, setCardList] = useState([])
   // const [addCardList, setAddCardList] = useState(false);
 
+  // grab all current user data from firebase and push into setInputList().
   useEffect(() => {
     const dbRef = ref(realtime, 'currentList');
 
@@ -28,24 +31,10 @@ function App() {
         newArray.push(listObj);
       }
       setInputList(newArray);
-      // setCardList(newArray);
     });
   }, []);
 
-
-  const addFullList = () => {
-    const listData = ref(realtime, 'prvList');
-    const currentList = ref(realtime, 'currentList');
-    // inputList.forEach((res) => {
-    //   push(listData, res.toDo)
-    // });
-
-    push(listData, inputList)
-
-    remove(currentList);
-
-  }
-
+  // grab all prvList data from firebase and push into setCardList().
   useEffect(() => {
     const listData = ref(realtime, 'prvList');
 
@@ -67,51 +56,64 @@ function App() {
 
   }, [])
 
+  // onSubmit function to pass on to UserForm.
+  const addingList = (e) => {
+    e.preventDefault();
+
+    if (userInput) {
+      const dbRef = ref(realtime, 'currentList');
+      push(dbRef, userInput);
+      setUserInput('');
+    } else {
+      alert('please');
+    }
+  }
+
+  // adding function 
+  const addFullList = () => {
+    const listData = ref(realtime, 'prvList');
+    const currentList = ref(realtime, 'currentList');
+    // inputList.forEach((res) => {
+    //   push(listData, res.toDo)
+    // });
+
+    push(listData, inputList)
+
+    remove(currentList);
+
+  }
 
   return (
     <div className="App">
-      <header className="wrapper">
-        <h1>Daily Log App</h1>
+      <HeaderTemp>
         <UserForm
           setUserInput={setUserInput}
-          setInputList={setInputList}
-          inputList={inputList}
           userInput={userInput}
+          addingList={addingList}
         />
-      </header>
+      </HeaderTemp>
+
       <main>
-        <section className="wrapper list-container">
-          <ul className="current-list">
-            <div className="list-bar">
-              <p>how many:{inputList.length}</p>
-              <button onClick={addFullList}>Complate List</button>
-            </div>
-            <DisplayList
-              inputList={inputList}
-            />
-          </ul>
-        </section>
+        <ListSection inputList={inputList} addFullList={addFullList}>
+          <DisplayList inputList={inputList} />
+        </ListSection>
 
-        <section className="wrapper">
-          <ul className="oldlist-container">
-            {
-              cardList.map((res) => {
-                console.log(res.key);
-                return (
-                  <CardList
-                    key={res.key}
-                    list={res.list}
-                  />
-                )
-              })
-            }
+        <section>
+          <div className="wrapper">
+            <ul className="old-list-container">
+              {
+                cardList.map((res) => {
+                  return (
+                    <CardList
+                      key={res.key}
+                      list={res.list}
+                    />
+                  )
+                })
+              }
+            </ul>
 
-
-            {/* <CardList
-              cardList={cardList}
-              setCardList={setCardList} /> */}
-
-          </ul>
+          </div>
         </section>
       </main>
     </div>
