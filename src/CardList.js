@@ -1,18 +1,21 @@
 
 const CardList = (props) => {
-	console.log(props.cardList);
-	return (
-		<ul className="old-list">
-			{props.cardList.map(res => (<li>{res.list}</li>))}
-		</ul>
+	// const [oldList, setOldList] = useState('');
 
-		// props.cardList.map((res) => {
-		// 	return (
-		// 		<ul>
-		// 			<li>{res.list}</li>
-		// 		</ul>
-		// 	)
-		// })
+	// console.log(props.list.toDo);
+
+	// props.list.forEach(res => console.log(res.toDo))
+
+	// return null
+
+	return (
+
+		<li >
+			<ul className="old-list">
+				{props.list.map(res => (<li key={res.key}>{res.toDo}</li>))}
+			</ul>
+		</li>
+
 	)
 }
 

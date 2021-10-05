@@ -10,8 +10,8 @@ import './App.css';
 function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
-  // const [addCardList, setAddCardList] = useState(false);
   const [cardList, setCardList] = useState([])
+  // const [addCardList, setAddCardList] = useState(false);
 
   useEffect(() => {
     const dbRef = ref(realtime, 'currentList');
@@ -32,24 +32,27 @@ function App() {
     });
   }, []);
 
+
   const addFullList = () => {
     const listData = ref(realtime, 'prvList');
-    const currentList = ref(realtime, 'currentList')
-    console.log(inputList)
-    inputList.forEach((res) => {
+    const currentList = ref(realtime, 'currentList');
+    // inputList.forEach((res) => {
+    //   push(listData, res.toDo)
+    // });
 
-      push(listData, res.toDo)
-    });
+    push(listData, inputList)
+
     remove(currentList);
 
-    // push(listData, inputList);
   }
 
   useEffect(() => {
     const listData = ref(realtime, 'prvList');
 
     onValue(listData, (snapshot) => {
+
       const storeList = snapshot.val();
+
       const newArray = [];
       for (let item in storeList) {
         const listObj = {
@@ -58,8 +61,8 @@ function App() {
         }
         newArray.push(listObj);
       }
-      setCardList(newArray);
 
+      setCardList(newArray);
     })
 
   }, [])
@@ -78,9 +81,11 @@ function App() {
       </header>
       <main>
         <section className="wrapper list-container">
-          <ul>
-            <span>how many:{inputList.length}</span>
-            <button onClick={addFullList}>Complate List</button>
+          <ul className="current-list">
+            <div className="list-bar">
+              <p>how many:{inputList.length}</p>
+              <button onClick={addFullList}>Complate List</button>
+            </div>
             <DisplayList
               inputList={inputList}
             />
@@ -88,8 +93,25 @@ function App() {
         </section>
 
         <section className="wrapper">
-          <CardList
-            cardList={cardList} />
+          <ul className="oldlist-container">
+            {
+              cardList.map((res) => {
+                console.log(res.key);
+                return (
+                  <CardList
+                    key={res.key}
+                    list={res.list}
+                  />
+                )
+              })
+            }
+
+
+            {/* <CardList
+              cardList={cardList}
+              setCardList={setCardList} /> */}
+
+          </ul>
         </section>
       </main>
     </div>
