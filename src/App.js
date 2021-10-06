@@ -4,16 +4,18 @@ import DisplayList from './DisplayList.js';
 import CardList from './CardList.js';
 import { useState, useEffect } from 'react';
 import { ref, onValue, push, remove } from 'firebase/database';
-
-import './App.css';
 import HeaderTemp from './HeaderTemp.js';
 import ListSection from './ListSection.js';
+
+import './App.css';
 
 function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
-  const [cardList, setCardList] = useState([])
-  // const [addCardList, setAddCardList] = useState(false);
+  const [cardList, setCardList] = useState([]);
+  // const [init, setInit] = useState(false);
+
+
 
   // grab all current user data from firebase and push into setInputList().
   useEffect(() => {
@@ -26,7 +28,8 @@ function App() {
       for (let item in myList) {
         const listObj = {
           key: item,
-          toDo: myList[item]
+          toDo: myList[item],
+          isCompleted: false
         }
         newArray.push(listObj);
       }
@@ -76,13 +79,30 @@ function App() {
     // inputList.forEach((res) => {
     //   push(listData, res.toDo)
     // });
+    console.log(inputList);
 
-    push(listData, inputList)
+    if (inputList) {
+      push(listData, inputList)
 
-    remove(currentList);
+      remove(currentList);
+    }
 
   }
+  // completed function
+  const completedList = (key) => {
+    setInputList(
+      inputList.map(data => {
+        if (key === data.key) {
+          return {
+            ...data, isCompleted: !data.isCompleted
+          }
+        }
+        return data;
+      })
+    );
 
+
+  }
   return (
     <div className="App">
       <HeaderTemp>
@@ -95,7 +115,11 @@ function App() {
 
       <main>
         <ListSection inputList={inputList} addFullList={addFullList}>
-          <DisplayList inputList={inputList} />
+          <DisplayList
+            inputList={inputList}
+            setInputList={setInputList}
+            completedList={completedList}
+          />
         </ListSection>
 
         <section>

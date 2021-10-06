@@ -317,6 +317,10 @@ ul.current-list li {
   margin-bottom: 10px;
 }
 
+li.completed {
+  color: red;
+}
+
 /* ===== old-list section ===== */
 
 ul.old-list-container {
