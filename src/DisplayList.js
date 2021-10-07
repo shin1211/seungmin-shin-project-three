@@ -1,31 +1,26 @@
-import realtime from './firebase';
-import { ref, remove } from 'firebase/database'
 
+const DisplayList = ({ inputList, completedList, delList }) => {
 
-
-const DisplayList = (props) => {
-
-	const delList = (key) => {
-		const specificData = ref(realtime, `currentList/${key}`);
-		remove(specificData);
-	}
 	return (
 		<>
-			{props.inputList.length === 0 ? (
-				<li><p className="none-data">Start with your first goal for day!</p></li>
+			{inputList.length === 0 ? (
+
+				<li><p className="none-data">Set up goals to start your day!</p></li>
+
 			) : (
 
-				props.inputList.map((res, index) => {
+				inputList.map((res, index) => {
 					return (
 						<li key={res.key} className={res.isCompleted ? 'completed' : null}>
 							<p>{res.toDo}</p>
 							<div className="btn-container">
-								<button onClick={() => props.completedList(res.key)}>✔️</button>
-								<button onClick={() => delList(res.key)}>X</button>
+								<button onClick={() => completedList(res.key, res.isCompleted)}><span className="sr-only">Completed</span>✔️</button>
+								<button onClick={() => delList(res.key)}><span className="sr-only">Delete</span>X</button>
 							</div>
 						</li >
 					)
 				})
+
 			)}
 		</>
 

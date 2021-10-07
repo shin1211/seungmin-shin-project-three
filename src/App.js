@@ -1,11 +1,11 @@
 import realtime from './firebase.js';
+import HeaderTemp from './HeaderTemp.js';
 import UserForm from './UserForm.js';
 import DisplayList from './DisplayList.js';
+import ListSection from './ListSection.js';
 import CardList from './CardList.js';
 import { useState, useEffect } from 'react';
-import { ref, onValue, push, remove } from 'firebase/database';
-import HeaderTemp from './HeaderTemp.js';
-import ListSection from './ListSection.js';
+import { ref, onValue, push, remove, update } from 'firebase/database';
 
 import './App.css';
 
@@ -13,7 +13,6 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
   const [cardList, setCardList] = useState([]);
-
 
   // grab all current user data from firebase and push into setInputList().
   useEffect(() => {
@@ -23,13 +22,14 @@ function App() {
     onValue(dbRef, (snapshot) => {
       const myList = snapshot.val();
       const newArray = [];
-      // Loop through the myList object. For each property inside it, 
       for (let item in myList) {
+
         const listObj = {
           key: item,
-          toDo: myList[item],
-          isCompleted: false
+          toDo: myList[item].toDo,
+          isCompleted: myList[item].isCompleted
         }
+
         newArray.push(listObj);
       }
       setInputList(newArray);
@@ -38,12 +38,10 @@ function App() {
 
   // grab all prvList data from firebase and push into setCardList().
   useEffect(() => {
+    // Create a reference to our realtime database with specific name 'prvList' which is going to store the user completed list.
     const listData = ref(realtime, 'prvList');
-
     onValue(listData, (snapshot) => {
-
       const storeList = snapshot.val();
-
       const newArray = [];
       for (let item in storeList) {
         const listObj = {
@@ -52,50 +50,57 @@ function App() {
         }
         newArray.push(listObj);
       }
-
       setCardList(newArray);
     })
 
   }, [])
 
-  // onSubmit function to pass on to UserForm.
+  // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
     e.preventDefault();
     if (userInput) {
       const dbRef = ref(realtime, 'currentList');
-      push(dbRef, userInput);
+      const inputData = {
+        toDo: userInput,
+        isCompleted: false
+      }
+      push(dbRef, inputData);
       setUserInput('');
     } else {
-      alert('please');
+      alert("Please enter the today's goal");
     }
   }
 
-  // adding function 
+  // Check if the user has inputList any value, and push to Firebase prvList.
   const addFullList = () => {
-    const listData = ref(realtime, 'prvList');
+    const prvList = ref(realtime, 'prvList');
     const currentList = ref(realtime, 'currentList');
     if (inputList.length === 0) {
-      alert('please')
+      alert("You haven't even started yet")
     } else {
-      push(listData, inputList)
+      // push all input list data into prvlist
+      push(prvList, inputList)
       remove(currentList);
     }
 
   }
-  // completed function
-  const completedList = (key) => {
-    setInputList(
-      inputList.map(data => {
-        if (key === data.key) {
-          return {
-            ...data, isCompleted: !data.isCompleted
-          }
-        }
-        return data;
-      })
-    );
+  // completed function : when user click the tick button, grab a specific data from firebase and update!
+  const completedList = (key, isCompleted) => {
+    // This data that will be updated to specific firebase data.
+    const updateData = {
+      isCompleted: !isCompleted
+    }
+    const specificData = ref(realtime, `currentList/${key}`);
+    update(specificData, updateData);
 
   }
+  // Delte function : when user click del button, grab a specific data from firebase and delete 
+  const delList = (key) => {
+    const specificData = ref(realtime, `currentList/${key}`);
+    remove(specificData);
+  }
+
+
   return (
     <div className="App">
       <HeaderTemp>
@@ -110,8 +115,8 @@ function App() {
         <ListSection inputList={inputList} addFullList={addFullList}>
           <DisplayList
             inputList={inputList}
-            setInputList={setInputList}
             completedList={completedList}
+            delList={delList}
           />
         </ListSection>
 
