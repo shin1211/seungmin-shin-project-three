@@ -13,18 +13,17 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
   const [cardList, setCardList] = useState([]);
-  // const [init, setInit] = useState(false);
-
 
 
   // grab all current user data from firebase and push into setInputList().
   useEffect(() => {
+    // Create a reference to our realtime database with specific name 'currentList' which is going to store the user current list.
     const dbRef = ref(realtime, 'currentList');
 
     onValue(dbRef, (snapshot) => {
       const myList = snapshot.val();
       const newArray = [];
-
+      // Loop through the myList object. For each property inside it, 
       for (let item in myList) {
         const listObj = {
           key: item,
@@ -62,7 +61,6 @@ function App() {
   // onSubmit function to pass on to UserForm.
   const addingList = (e) => {
     e.preventDefault();
-
     if (userInput) {
       const dbRef = ref(realtime, 'currentList');
       push(dbRef, userInput);
@@ -76,14 +74,10 @@ function App() {
   const addFullList = () => {
     const listData = ref(realtime, 'prvList');
     const currentList = ref(realtime, 'currentList');
-    // inputList.forEach((res) => {
-    //   push(listData, res.toDo)
-    // });
-    console.log(inputList);
-
-    if (inputList) {
+    if (inputList.length === 0) {
+      alert('please')
+    } else {
       push(listData, inputList)
-
       remove(currentList);
     }
 
@@ -100,7 +94,6 @@ function App() {
         return data;
       })
     );
-
 
   }
   return (
@@ -136,10 +129,12 @@ function App() {
                 })
               }
             </ul>
-
           </div>
         </section>
       </main>
+      <footer>
+        <p>Copyright © 2021 Juno College</p>
+      </footer>
     </div>
   );
 }
