@@ -382,7 +382,8 @@ ul.current-list li:last-child {
 }
 
 li.completed {
-  color: red;
+  color: #60b2e5;
+  text-decoration: line-through;
 }
 
 /* ===== old-list section ===== */
@@ -436,5 +437,28 @@ media
   .list-bar h2 {
     margin-bottom: 0.5rem;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    width: 95%;
+  }
+
+  ul.current-list {
+    padding: 0;
+    border: none;
+  }
+
+  ul.current-list li {
+    flex-direction: column;
+  }
+
+  ul.current-list p {
+    margin-bottom: 1rem;
+  }
+
+  ul.old-list-container {
+    border: 0;
   }
 }
