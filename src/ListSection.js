@@ -1,14 +1,14 @@
-const ListSection = (props) => {
+const ListSection = ({ inputList, addFullList, children }) => {
 
 	return (
 		<section className="current-list-container">
 			<div className="wrapper">
 				<div className="list-bar">
-					<h2>How many:{props.inputList.length}</h2>
-					<button onClick={props.addFullList}>Complate List</button>
+					<h2>Number Of Tasks: {inputList.length}</h2>
+					<button onClick={addFullList}>All completed!!</button>
 				</div>
 				<ul className="current-list">
-					{props.children}
+					{children}
 				</ul>
 			</div>
 		</section>
