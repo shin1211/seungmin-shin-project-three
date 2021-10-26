@@ -279,7 +279,7 @@ p.none-data {
 /* ========
 Buttons
 =========== */
-button {
+/* button {
   border-style: none;
   padding: 0.5rem 1rem;
   background-color: #7bb6b2;
@@ -295,7 +295,7 @@ ul.current-list button:focus,
 .list-bar button:hover,
 .list-bar button:focus {
   transform: scale(1.1);
-}
+} */
 
 /* ========
 Header

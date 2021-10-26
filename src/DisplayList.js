@@ -9,7 +9,7 @@ const DisplayList = ({ inputList, completedList, delList }) => {
 
 			) : (
 
-				inputList.map((res, index) => {
+				inputList.map((res) => {
 					return (
 						<li key={res.key} className={res.isCompleted ? 'completed' : null}>
 							<p>{res.toDo}</p>
@@ -29,3 +29,18 @@ const DisplayList = ({ inputList, completedList, delList }) => {
 
 
 export default DisplayList;
+
+// prvList = {
+// 	MmxOTNEJaY_pmw_c7N_ : {
+// 		isCompleted : false,
+// 		toDo: 'adsfad',
+// 	},
+// 	MmxOTNEJaY_pmw_c72_ = {
+// 		isCompleted : false,
+// 		toDo: 'adsfad',
+// 	},
+// 	MmxOTNEJaY_pmw_c7N_ = {
+// 		isCompleted : false,
+// 		toDo: 'adsfad',
+// 	}
+// }
