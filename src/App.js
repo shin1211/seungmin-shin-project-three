@@ -18,11 +18,19 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
   const [oldList, setOldList] = useState([]);
+  const [value, setValue] = useState(new Date());
 
-  const [value, onChange] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
 
+  // const onChange = date => {
+  //   console.log(date.toISOString().split('T')[0]);
+  //   setDate(date);
+  // }
 
-  // const [currentTime, setCurrentTime] = useState('')
+  const onChange = (nextValue) => {
+    setValue(nextValue);
+    console.log(value.toISOString().split('T')[0])
+  }
 
   // grab all current user data from firebase and push into setInputList().
   useEffect(() => {
@@ -49,36 +57,31 @@ function App() {
   // grab all prvList data from firebase and push into setOldList().
   useEffect(() => {
     // Create a reference to our realtime database with specific name 'prvList' which is going to store the user completed list.
-    const listData = ref(realtime, 'prvList');
+
+    const listData = ref(realtime, 'prvList/' + value.toISOString().split('T')[0])
     onValue(listData, (snapshot) => {
       const storeList = snapshot.val();
       const newArray = [];
       for (let item in storeList) {
-
         const listObj = {
           key: item,
-          list: storeList[item]
+          toDo: storeList[item].toDo,
+          isCompleted: storeList[item].isCompleted
         }
         newArray.push(listObj);
       }
       setOldList(newArray);
     })
-    // console.log(oldList);
-
-  }, [])
+  }, [value])
 
   // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
     e.preventDefault();
-    // const currentDate = new Date().toISOString().split('T')[0];
-    // console.log(currentDate);
-
     if (userInput) {
       const dbRef = ref(realtime, 'currentList');
       const inputData = {
         toDo: userInput,
         isCompleted: false,
-        // date: currentDate,
       }
       push(dbRef, inputData);
       setUserInput('');
@@ -89,32 +92,32 @@ function App() {
 
   // Check if the user has inputList any value, and push to Firebase prvList.
   const addFullList = () => {
-    const prvList = ref(realtime, 'prvList');
+    const currentDate = new Date().toISOString().split('T')[0];
+    const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
     if (inputList.length === 0) {
       alert("You haven't even started yet")
     } else {
-      // push all input list data into prvlist
-      let objData = inputList.reduce((prev, curr) => {
+
+      let newObj = inputList.reduce((prev, curr) => {
         prev[curr.key] = {
           toDo: curr.toDo,
           isCompleted: curr.isCompleted,
         }
         return prev;
-      }, { date: value.toDateString() });
+      }, {});
 
-      // console.log(objData);
-
-      push(prvList, objData)
+      update(prvList, newObj)
       remove(currentList);
+
     }
 
   }
   // completed function : when user click the tick button, grab a specific data from firebase and update!
-  const completedList = (key, isCompleted) => {
+  const completedList = (key, isCompletedBool) => {
     // This data that will be updated to specific firebase data.
     const updateData = {
-      isCompleted: !isCompleted
+      isCompleted: !isCompletedBool,
     }
     const specificData = ref(realtime, `currentList/${key}`);
     update(specificData, updateData);
@@ -150,8 +153,14 @@ function App() {
             delList={delList}
           />
         </ListSection>
+
+        <OldListSection oldList={oldList} date={value}>
+
+        </OldListSection>
+
+
         {/* This component will show the old list that user completed before */}
-        <OldListSection>
+        {/* <OldListSection>
           {
             oldList.map(list => {
               return (
@@ -163,7 +172,8 @@ function App() {
               )
             })
           }
-        </OldListSection>
+        </OldListSection> */}
+
       </main>
       <footer>
         <p>Created at Juno College</p>
