@@ -4,7 +4,6 @@ import UserForm from './UserForm.js';
 import DisplayList from './DisplayList.js';
 import ListSection from './ListSection.js';
 import OldListSection from './OldListSection.js';
-import CardList from './CardList.js';
 
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
@@ -20,16 +19,8 @@ function App() {
   const [oldList, setOldList] = useState([]);
   const [value, setValue] = useState(new Date());
 
-  // const [date, setDate] = useState(new Date());
-
-  // const onChange = date => {
-  //   console.log(date.toISOString().split('T')[0]);
-  //   setDate(date);
-  // }
-
   const onChange = (nextValue) => {
     setValue(nextValue);
-    console.log(value.toISOString().split('T')[0])
   }
 
   // grab all current user data from firebase and push into setInputList().
@@ -109,7 +100,6 @@ function App() {
 
       update(prvList, newObj)
       remove(currentList);
-
     }
 
   }
@@ -154,25 +144,7 @@ function App() {
           />
         </ListSection>
 
-        <OldListSection oldList={oldList} date={value}>
-
-        </OldListSection>
-
-
-        {/* This component will show the old list that user completed before */}
-        {/* <OldListSection>
-          {
-            oldList.map(list => {
-              return (
-                <CardList
-                  key={list.key}
-                  id={list.key}
-                  list={list.list}
-                />
-              )
-            })
-          }
-        </OldListSection> */}
+        <OldListSection oldList={oldList} date={value} />
 
       </main>
       <footer>

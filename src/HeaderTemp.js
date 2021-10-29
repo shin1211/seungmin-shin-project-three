@@ -1,9 +1,9 @@
 
-const HeaderTemp = (props) => {
+const HeaderTemp = ({ children }) => {
   return (
     <header className="wrapper">
       <h1>Daily Log App</h1>
-      {props.children}
+      {children}
     </header>
   )
 }

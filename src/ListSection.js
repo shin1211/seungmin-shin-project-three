@@ -1,5 +1,6 @@
-const ListSection = ({ inputList, addFullList, children }) => {
 
+const ListSection = ({ inputList, addFullList, children }) => {
+	console.log(children)
 	return (
 		<section className="current-list-container">
 			<div className="wrapper">
@@ -7,9 +8,12 @@ const ListSection = ({ inputList, addFullList, children }) => {
 					<h2>Number Of Tasks: {inputList.length}</h2>
 					<button onClick={addFullList}>All completed!!</button>
 				</div>
-				<ul className="current-list">
-					{children}
-				</ul>
+				<div className="divider">
+					{children[0]}
+					<ul className="current-list">
+						{children[1]}
+					</ul>
+				</div>
 			</div>
 		</section>
 	)
