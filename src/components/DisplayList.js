@@ -29,18 +29,3 @@ const DisplayList = ({ inputList, completedList, delList }) => {
 
 
 export default DisplayList;
-
-// prvList = {
-// 	MmxOTNEJaY_pmw_c7N_ : {
-// 		isCompleted : false,
-// 		toDo: 'adsfad',
-// 	},
-// 	MmxOTNEJaY_pmw_c72_ = {
-// 		isCompleted : false,
-// 		toDo: 'adsfad',
-// 	},
-// 	MmxOTNEJaY_pmw_c7N_ = {
-// 		isCompleted : false,
-// 		toDo: 'adsfad',
-// 	}
-// }

@@ -1,10 +1,11 @@
+// All components and containers
 import realtime from './firebase.js';
-import HeaderTemp from './HeaderTemp.js';
-import UserForm from './UserForm.js';
-import DisplayList from './DisplayList.js';
-import ListSection from './ListSection.js';
-import OldListSection from './OldListSection.js';
-
+import HeaderTemp from './containers/HeaderTemp.js';
+import UserForm from './components/UserForm.js';
+import DisplayList from './components/DisplayList.js';
+import ListSection from './components/ListSection.js';
+import DisplayOldList from './components/DisplayOldList.js';
+// 
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
@@ -17,16 +18,15 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
   const [oldList, setOldList] = useState([]);
+  const [completedListAll, setCompletedListAll] = useState([]);
+
   const [value, setValue] = useState(new Date());
 
-  const onChange = (nextValue) => {
-    setValue(nextValue);
-  }
-
-  // grab all current user data from firebase and push into setInputList().
+  // grab all current and previous user data list from firebase and push into setInputList() and completedListAll.
   useEffect(() => {
     // Create a reference to our realtime database with specific name 'currentList' which is going to store the user current list.
     const dbRef = ref(realtime, 'currentList');
+    const oldDbRef = ref(realtime, 'prvList');
 
     onValue(dbRef, (snapshot) => {
       const myList = snapshot.val();
@@ -43,12 +43,18 @@ function App() {
       }
       setInputList(newArray);
     });
+
+    // 
+    onValue(oldDbRef, (snapshot) => {
+      const oldList = snapshot.val();
+      const listsDate = Object.keys(oldList);
+      setCompletedListAll(listsDate);
+    })
   }, []);
 
-  // grab all prvList data from firebase and push into setOldList().
+  // grab prvList data by specific date from firebase and push into setOldList().
   useEffect(() => {
-    // Create a reference to our realtime database with specific name 'prvList' which is going to store the user completed list.
-
+    // Create a reference to our realtime database with specific name 'prvList' which will store the user completed list by each date.
     const listData = ref(realtime, 'prvList/' + value.toISOString().split('T')[0])
     onValue(listData, (snapshot) => {
       const storeList = snapshot.val();
@@ -119,6 +125,16 @@ function App() {
     remove(specificData);
   }
 
+  const onChange = (nextValue) => {
+    setValue(nextValue);
+  }
+
+  const tileClassName = ({ date, view }) => {
+    if (completedListAll.includes(date.toISOString().split('T')[0])) {
+      return 'red'
+    }
+  }
+
 
   return (
     <div className="App">
@@ -136,6 +152,7 @@ function App() {
           <Calendar
             onChange={onChange}
             value={value}
+            tileClassName={tileClassName}
           />
           <DisplayList
             inputList={inputList}
@@ -144,7 +161,7 @@ function App() {
           />
         </ListSection>
 
-        <OldListSection oldList={oldList} date={value} />
+        <DisplayOldList oldList={oldList} date={value} />
 
       </main>
       <footer>

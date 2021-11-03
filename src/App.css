@@ -422,6 +422,10 @@ ul.old-list li {
   margin: 0.25rem;
 }
 
+.red {
+  background-color: red;
+}
+
 /* ========
 footer
 ========== */

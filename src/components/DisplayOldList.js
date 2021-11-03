@@ -1,6 +1,6 @@
 
-const OldListSection = ({ date, oldList }) => {
-
+const DisplayOldList = ({ date, oldList }) => {
+  console.log(oldList)
   return (
     <>
       {oldList.length === 0 ? null : (
@@ -28,4 +28,4 @@ const OldListSection = ({ date, oldList }) => {
 }
 
 
-export default OldListSection;
+export default DisplayOldList;

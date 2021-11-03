@@ -1,6 +1,5 @@
 
 const ListSection = ({ inputList, addFullList, children }) => {
-	console.log(children)
 	return (
 		<section className="current-list-container">
 			<div className="wrapper">
