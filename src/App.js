@@ -125,7 +125,9 @@ function App() {
     remove(specificData);
   }
 
-  const onChange = (nextValue) => {
+  const onChange = (nextValue, event) => {
+    event.preventDefault();
+    // setOldList([]);
     setValue(nextValue);
   }
 

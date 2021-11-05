@@ -5,7 +5,7 @@ const ListSection = ({ inputList, addFullList, children }) => {
 			<div className="wrapper">
 				<div className="list-bar">
 					<h2>Number Of Tasks: {inputList.length}</h2>
-					<button onClick={addFullList}>All completed!!</button>
+					<button onClick={addFullList}>Finish My Day</button>
 				</div>
 				<div className="divider">
 					{children[0]}
