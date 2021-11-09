@@ -5,6 +5,7 @@ import UserForm from './components/UserForm.js';
 import DisplayList from './components/DisplayList.js';
 import ListSection from './containers/ListSection.js';
 import DisplayOldList from './components/DisplayOldList.js';
+import Modal from './components/modal/Modal.js';
 // 
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
@@ -17,9 +18,9 @@ import './App.css';
 function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
-  const [oldList, setOldList] = useState([]);
-  const [completedListAll, setCompletedListAll] = useState([]);
+  const [completedListsDate, setCompletedListsDate] = useState([]);
 
+  const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(new Date());
 
   // grab all current and previous user data list from firebase and push into setInputList() and completedListAll.
@@ -48,28 +49,10 @@ function App() {
     onValue(oldDbRef, (snapshot) => {
       const oldList = snapshot.val();
       const listsDate = Object.keys(oldList);
-      setCompletedListAll(listsDate);
+      setCompletedListsDate(listsDate);
     })
   }, []);
 
-  // grab prvList data by specific date from firebase and push into setOldList().
-  useEffect(() => {
-    // Create a reference to our realtime database with specific name 'prvList' which will store the user completed list by each date.
-    const listData = ref(realtime, 'prvList/' + value.toISOString().split('T')[0])
-    onValue(listData, (snapshot) => {
-      const storeList = snapshot.val();
-      const newArray = [];
-      for (let item in storeList) {
-        const listObj = {
-          key: item,
-          toDo: storeList[item].toDo,
-          isCompleted: storeList[item].isCompleted
-        }
-        newArray.push(listObj);
-      }
-      setOldList(newArray);
-    })
-  }, [value])
 
   // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
@@ -88,7 +71,7 @@ function App() {
   }
 
   // Check if the user has inputList any value, and push to Firebase prvList.
-  const addFullList = () => {
+  const addFullList = (userComment) => {
     const currentDate = new Date().toISOString().split('T')[0];
     const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
@@ -102,10 +85,10 @@ function App() {
           isCompleted: curr.isCompleted,
         }
         return prev;
-      }, {});
-
-      update(prvList, newObj)
+      }, { comment: userComment });     // grab user comments when user click the End day (addFullList) button
+      update(prvList, newObj);
       remove(currentList);
+
     }
 
   }
@@ -127,12 +110,11 @@ function App() {
 
   const onChange = (nextValue, event) => {
     event.preventDefault();
-    // setOldList([]);
     setValue(nextValue);
   }
 
   const tileClassName = ({ date, view }) => {
-    if (completedListAll.includes(date.toISOString().split('T')[0])) {
+    if (completedListsDate.includes(date.toISOString().split('T')[0])) {
       return 'red'
     }
   }
@@ -146,11 +128,14 @@ function App() {
           userInput={userInput}
           addingList={addingList}
         />
+        {openModal && (
+          <Modal setOpenModal={setOpenModal} addFullList={addFullList} />
+        )}
       </HeaderTemp>
 
       <main>
         {/* This component will show the current list that user added */}
-        <ListSection inputList={inputList} addFullList={addFullList}>
+        <ListSection inputList={inputList} openModal={openModal} setOpenModal={setOpenModal}>
           <Calendar
             onChange={onChange}
             value={value}
@@ -163,7 +148,9 @@ function App() {
           />
         </ListSection>
 
-        <DisplayOldList oldList={oldList} date={value} />
+
+
+        <DisplayOldList date={value} />
 
       </main>
       <footer>
