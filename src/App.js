@@ -3,7 +3,7 @@ import realtime from './firebase.js';
 import HeaderTemp from './containers/HeaderTemp.js';
 import UserForm from './components/UserForm.js';
 import DisplayList from './components/DisplayList.js';
-import ListSection from './components/ListSection.js';
+import ListSection from './containers/ListSection.js';
 import DisplayOldList from './components/DisplayOldList.js';
 // 
 import Calendar from 'react-calendar'
