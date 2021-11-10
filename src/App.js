@@ -1,10 +1,9 @@
 // All components and containers
 import realtime from './firebase.js';
-import HeaderTemp from './containers/HeaderTemp.js';
-import UserForm from './components/UserForm.js';
-import DisplayList from './components/DisplayList.js';
-import ListSection from './containers/ListSection.js';
-import DisplayOldList from './components/DisplayOldList.js';
+import MainContainer from './containers/MainContainer.js';
+import UserForm from './components/userForm/UserForm.js';
+import CurrentList from './components/currentList/CurrentList.js';
+import OldList from './components/oldList/OldList.js';
 import Modal from './components/modal/Modal.js';
 // 
 import Calendar from 'react-calendar'
@@ -52,7 +51,6 @@ function App() {
       setCompletedListsDate(listsDate);
     })
   }, []);
-
 
   // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
@@ -113,46 +111,50 @@ function App() {
     setValue(nextValue);
   }
 
-  const tileClassName = ({ date, view }) => {
+  const tileContent = ({ date, view }) => {
     if (completedListsDate.includes(date.toISOString().split('T')[0])) {
-      return 'red'
+      return <div className='dot' aria-label="showing red dot when there are some data in specific day"></div>
     }
   }
 
 
   return (
     <div className="App">
-      <HeaderTemp>
+      <header>
+        <h1>Daily Log</h1>
+      </header>
+      {openModal && (
+        <Modal
+          setOpenModal={setOpenModal}
+          addFullList={addFullList}
+        />
+      )}
+      <MainContainer>
+
         <UserForm
           setUserInput={setUserInput}
           userInput={userInput}
           addingList={addingList}
         />
-        {openModal && (
-          <Modal setOpenModal={setOpenModal} addFullList={addFullList} />
-        )}
-      </HeaderTemp>
 
-      <main>
-        {/* This component will show the current list that user added */}
-        <ListSection inputList={inputList} openModal={openModal} setOpenModal={setOpenModal}>
-          <Calendar
-            onChange={onChange}
-            value={value}
-            tileClassName={tileClassName}
-          />
-          <DisplayList
-            inputList={inputList}
-            completedList={completedList}
-            delList={delList}
-          />
-        </ListSection>
+        <CurrentList
+          inputList={inputList}
+          completedList={completedList}
+          delList={delList}
+          setOpenModal={setOpenModal}
+        />
+
+        <Calendar
+          onChange={onChange}
+          value={value}
+          tileContent={tileContent}
+        />
+
+        <OldList date={value} />
+      </MainContainer>
 
 
 
-        <DisplayOldList date={value} />
-
-      </main>
       <footer>
         <p>Created at Juno College</p>
       </footer>

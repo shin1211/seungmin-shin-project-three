@@ -27,9 +27,14 @@
 }
 
 .submit-btn {
-  padding: 0 1rem;
+  /* padding: 0 1rem;
   margin-top: 1rem;
-  align-self: center;
+  align-self: center; */
+  border-style: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background-color: orangered;
+  color: white;
 }
 
 .close-btn {

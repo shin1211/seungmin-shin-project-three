@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
-import realtime from '../firebase';
+import realtime from '../../firebase.js';
+import oldListStyle from './OldListStyle.module.css'
 
 const DisplayOldList = ({ date }) => {
   const [oldList, setOldList] = useState([]);
@@ -33,28 +34,26 @@ const DisplayOldList = ({ date }) => {
     <>
       {
         oldList.length === 0 ? null : (
-          <section className="old-list-container">
-            <div className="wrapper">
-              <div className="divider">
-                <h3>{date.toISOString().split('T')[0]}</h3>
-                <ul className="old-list">
-                  {
-                    oldList.map((listData) => {
-                      return (
-                        <li key={listData.key} className={listData.isCompleted ? 'completed' : null}>
-                          <p>{listData.toDo}</p>
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              </div>
-              <div className="comments-container">
-                <h4>Comments:</h4>
-                <p>{userComment}</p>
-              </div>
+          <div className={oldListStyle['old-list-container']}>
+            <div className={oldListStyle['old-list']}>
+              <h3>{date.toISOString().split('T')[0]}</h3>
+              <ul className="old-list">
+                {
+                  oldList.map((listData) => {
+                    return (
+                      <li key={listData.key} className={listData.isCompleted ? 'completed' : null}>
+                        <p>{listData.toDo}</p>
+                      </li>
+                    )
+                  })
+                }
+              </ul>
             </div>
-          </section>
+            <div className={oldListStyle['comments-container']}>
+              <h4>Comments:</h4>
+              <p>{userComment}</p>
+            </div>
+          </div>
         )}
     </>
   )

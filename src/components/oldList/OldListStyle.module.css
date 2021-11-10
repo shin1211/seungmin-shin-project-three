@@ -1,0 +1,17 @@
+.old-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.old-list,
+.comments-container {
+  background-color: #ededed;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.old-list li {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
