@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap");
 html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
@@ -226,19 +227,28 @@ html {
 
 body {
   background-color: #f4f4f4;
+  font-family: "Roboto", sans-serif;
+  color: #505050;
 }
-/* body {
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1.5rem;
+  background-color: #787878;
+  text-align: center;
   color: white;
-  background: #00aaa7;
-  background: linear-gradient(
-    383deg,
-    rgba(2, 0, 36, 1) 10%,
-    rgb(45, 143, 148) 67%
-  );
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-} */
+}
+
+.content-wrap {
+  padding-bottom: 1.5rem;
+}
 
 body,
 h1,
@@ -252,19 +262,30 @@ li {
   padding: 0;
 }
 
-/* ul {
-  list-style: none;
-} */
-
 .wrapper {
-  max-width: 1200px;
+  max-width: 1280px;
   width: 80%;
   margin: 0 auto;
 }
 
 h1 {
   font-size: 3rem;
-  margin: 3rem 0 3rem 0;
+  padding: 3rem 0 3rem 0;
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  /* line-height: 72px; */
+}
+
+h1::before {
+  content: "";
+  position: absolute;
+  width: 67px;
+  height: 67px;
+  background-color: #c4c4c4;
+  left: -80px;
+  top: 3rem;
+  border-radius: 50%;
 }
 
 h2 {
@@ -273,6 +294,12 @@ h2 {
 
 h3 {
   font-size: 1.1rem;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 p {
@@ -285,21 +312,16 @@ p.none-data {
   font-size: 1.5rem;
 }
 
-/* ========
-Buttons
-=========== */
+li.completed {
+  text-decoration: line-through;
+}
 
 button {
   cursor: pointer;
 }
-
-button.finish-button {
-  border-style: none;
-  padding: 0.5rem 1rem;
-  margin-left: 1rem;
-  background-color: orangered;
-  color: white;
-}
+/* ========
+Buttons
+=========== */
 
 button.react-calendar__tile {
   display: flex;
@@ -322,50 +344,4 @@ button.react-calendar__tile {
   height: 5px;
   border-radius: 50%;
   background-color: red;
-}
-
-li.completed {
-  background-color: black;
-}
-
-/* ========
-media
-========== */
-
-@media (max-width: 680px) {
-  .form-container {
-    width: 100%;
-  }
-
-  .list-bar {
-    flex-direction: column;
-  }
-
-  .list-bar h2 {
-    margin-bottom: 0.5rem;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .wrapper {
-    width: 95%;
-  }
-
-  ul.current-list {
-    padding: 0;
-    border: none;
-  }
-
-  ul.current-list li {
-    flex-direction: column;
-  }
-
-  ul.current-list p {
-    margin-bottom: 1rem;
-  }
-
-  ul.old-list-container {
-    border: 0;
-  }
 }

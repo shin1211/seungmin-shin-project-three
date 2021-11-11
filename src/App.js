@@ -119,8 +119,8 @@ function App() {
 
 
   return (
-    <div className="App">
-      <header>
+    <div className="content-wrap">
+      <header className="wrapper">
         <h1>Daily Log</h1>
       </header>
       {openModal && (
