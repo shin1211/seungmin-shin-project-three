@@ -1,6 +1,4 @@
 import currentListStyle from './CurrentListStyle.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentList = ({ inputList, completedList, delList, setOpenModal }) => {
 
