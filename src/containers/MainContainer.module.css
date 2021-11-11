@@ -25,4 +25,5 @@
   padding: 2rem;
   border-radius: 40px;
   background-color: #787878;
+  z-index: 10;
 }
