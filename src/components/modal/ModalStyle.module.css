@@ -1,0 +1,52 @@
+.modal-background {
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-container {
+  background-color: white;
+  color: black;
+  padding: 5rem;
+  position: relative;
+  border-radius: 20px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-textarea {
+  resize: none;
+  margin-top: 1rem;
+  width: 100%;
+  height: 250px;
+}
+
+.submit-btn {
+  /* padding: 0 1rem;
+  margin-top: 1rem;
+  align-self: center; */
+  border-style: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background-color: orangered;
+  color: white;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-style: none;
+  background-color: inherit;
+  padding: 1rem;
+  border-radius: 20px;
+}

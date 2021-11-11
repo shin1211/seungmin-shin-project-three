@@ -1,9 +1,14 @@
+// All components and containers
 import realtime from './firebase.js';
-import HeaderTemp from './HeaderTemp.js';
-import UserForm from './UserForm.js';
-import DisplayList from './DisplayList.js';
-import ListSection from './ListSection.js';
-import CardList from './CardList.js';
+import MainContainer from './containers/MainContainer.js';
+import UserForm from './components/userForm/UserForm.js';
+import CurrentList from './components/currentList/CurrentList.js';
+import OldList from './components/oldList/OldList.js';
+import Modal from './components/modal/Modal.js';
+// 
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
+
 import { useState, useEffect } from 'react';
 import { ref, onValue, push, remove, update } from 'firebase/database';
 
@@ -12,12 +17,16 @@ import './App.css';
 function App() {
   const [userInput, setUserInput] = useState('');
   const [inputList, setInputList] = useState([]);
-  const [cardList, setCardList] = useState([]);
+  const [completedListsDate, setCompletedListsDate] = useState([]);
 
-  // grab all current user data from firebase and push into setInputList().
+  const [openModal, setOpenModal] = useState(false);
+  const [value, setValue] = useState(new Date());
+
+  // grab all current and previous user data list from firebase and push into setInputList() and completedListAll.
   useEffect(() => {
     // Create a reference to our realtime database with specific name 'currentList' which is going to store the user current list.
     const dbRef = ref(realtime, 'currentList');
+    const oldDbRef = ref(realtime, 'prvList');
 
     onValue(dbRef, (snapshot) => {
       const myList = snapshot.val();
@@ -27,33 +36,21 @@ function App() {
         const listObj = {
           key: item,
           toDo: myList[item].toDo,
-          isCompleted: myList[item].isCompleted
+          isCompleted: myList[item].isCompleted,
         }
 
         newArray.push(listObj);
       }
       setInputList(newArray);
     });
-  }, []);
 
-  // grab all prvList data from firebase and push into setCardList().
-  useEffect(() => {
-    // Create a reference to our realtime database with specific name 'prvList' which is going to store the user completed list.
-    const listData = ref(realtime, 'prvList');
-    onValue(listData, (snapshot) => {
-      const storeList = snapshot.val();
-      const newArray = [];
-      for (let item in storeList) {
-        const listObj = {
-          key: item,
-          list: storeList[item]
-        }
-        newArray.push(listObj);
-      }
-      setCardList(newArray);
+    // 
+    onValue(oldDbRef, (snapshot) => {
+      const oldList = snapshot.val();
+      const listsDate = Object.keys(oldList);
+      setCompletedListsDate(listsDate);
     })
-
-  }, [])
+  }, []);
 
   // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
@@ -62,7 +59,7 @@ function App() {
       const dbRef = ref(realtime, 'currentList');
       const inputData = {
         toDo: userInput,
-        isCompleted: false
+        isCompleted: false,
       }
       push(dbRef, inputData);
       setUserInput('');
@@ -72,23 +69,32 @@ function App() {
   }
 
   // Check if the user has inputList any value, and push to Firebase prvList.
-  const addFullList = () => {
-    const prvList = ref(realtime, 'prvList');
+  const addFullList = (userComment) => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
     if (inputList.length === 0) {
       alert("You haven't even started yet")
     } else {
-      // push all input list data into prvlist
-      push(prvList, inputList)
+
+      let newObj = inputList.reduce((prev, curr) => {
+        prev[curr.key] = {
+          toDo: curr.toDo,
+          isCompleted: curr.isCompleted,
+        }
+        return prev;
+      }, { comment: userComment });     // grab user comments when user click the End day (addFullList) button
+      update(prvList, newObj);
       remove(currentList);
+
     }
 
   }
   // completed function : when user click the tick button, grab a specific data from firebase and update!
-  const completedList = (key, isCompleted) => {
+  const completedList = (key, isCompletedBool) => {
     // This data that will be updated to specific firebase data.
     const updateData = {
-      isCompleted: !isCompleted
+      isCompleted: !isCompletedBool,
     }
     const specificData = ref(realtime, `currentList/${key}`);
     update(specificData, updateData);
@@ -100,45 +106,57 @@ function App() {
     remove(specificData);
   }
 
+  const onChange = (nextValue, event) => {
+    event.preventDefault();
+    setValue(nextValue);
+  }
+
+  const tileContent = ({ date, view }) => {
+    if (completedListsDate.includes(date.toISOString().split('T')[0])) {
+      return <div className='dot' aria-label="showing red dot when there are some data in specific day"></div>
+    }
+  }
+
 
   return (
-    <div className="App">
-      <HeaderTemp>
+    <div className="content-wrap">
+      <header className="wrapper">
+        <h1>Daily Log</h1>
+      </header>
+      {openModal && (
+        <Modal
+          setOpenModal={setOpenModal}
+          addFullList={addFullList}
+        />
+      )}
+      <MainContainer>
+
         <UserForm
           setUserInput={setUserInput}
           userInput={userInput}
           addingList={addingList}
         />
-      </HeaderTemp>
 
-      <main>
-        <ListSection inputList={inputList} addFullList={addFullList}>
-          <DisplayList
-            inputList={inputList}
-            completedList={completedList}
-            delList={delList}
-          />
-        </ListSection>
+        <CurrentList
+          inputList={inputList}
+          completedList={completedList}
+          delList={delList}
+          setOpenModal={setOpenModal}
+        />
 
-        <section>
-          <div className="wrapper">
-            <ul className="old-list-container">
-              {
-                cardList.map((res) => {
-                  return (
-                    <CardList
-                      key={res.key}
-                      list={res.list}
-                    />
-                  )
-                })
-              }
-            </ul>
-          </div>
-        </section>
-      </main>
+        <Calendar
+          onChange={onChange}
+          value={value}
+          tileContent={tileContent}
+        />
+
+        <OldList date={value} />
+      </MainContainer>
+
+
+
       <footer>
-        <p>Copyright © 2021 Juno College</p>
+        <p>Created at Juno College</p>
       </footer>
     </div>
   );

@@ -1,0 +1,23 @@
+.old-list-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.old-list,
+.comments-container {
+  background-color: #ededed;
+  border-radius: 0 20px 20px 20px;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.old-list li {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
+.comments-container p {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}

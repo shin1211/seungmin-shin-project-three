@@ -1,0 +1,21 @@
+.form-container {
+  border-radius: 10px;
+  position: relative;
+}
+
+.user-input {
+  background-color: #d5d5d5;
+  border: 1px solid #d5d5d5;
+  padding: 0.5rem;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 10px;
+}
+
+.form-button {
+  position: absolute;
+  padding: 0.5rem;
+  transform: translateX(-40px) translateY(5px);
+  border-style: none;
+  background-color: #d5d5d5;
+}

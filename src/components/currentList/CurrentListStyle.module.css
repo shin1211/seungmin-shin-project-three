@@ -1,0 +1,42 @@
+p.current-day {
+  margin-top: 0.5rem;
+}
+
+.current-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: disc;
+}
+
+.current-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d5d5d5;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 10px;
+  margin: 0.5rem 0;
+}
+
+.btn-container button:first-child {
+  margin-right: 0.5rem;
+}
+.btn-container button {
+  border-style: none;
+  background-color: #d5d5d5;
+}
+
+.finish-button {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  border-style: none;
+  border-radius: 10px;
+  background-color: #d8d8d8;
+  margin-bottom: 1rem;
+}
