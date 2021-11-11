@@ -148,6 +148,8 @@ function App() {
           onChange={onChange}
           value={value}
           tileContent={tileContent}
+          calendarType="US"
+          locale="eng"
         />
 
         <OldList date={value} />
@@ -156,7 +158,7 @@ function App() {
 
 
       <footer>
-        <p>Created at Juno College</p>
+        <p>Created by Seungmin Shin at Juno College</p>
       </footer>
     </div>
   );

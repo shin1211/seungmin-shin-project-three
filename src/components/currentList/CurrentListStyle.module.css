@@ -30,6 +30,9 @@ p.current-day {
 .btn-container button {
   border-style: none;
   background-color: #d5d5d5;
+  border: 1px solid #ffffff;
+  padding: 5px;
+  padding-bottom: 0;
 }
 
 .finish-button {
