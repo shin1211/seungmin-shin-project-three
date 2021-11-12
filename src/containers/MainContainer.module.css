@@ -46,3 +46,21 @@
     margin-bottom: 1rem;
   }
 }
+
+@media (max-width: 450px) {
+  .wrapper {
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .current-list-container {
+    width: 100%;
+  }
+
+  .old-list-container {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+}
