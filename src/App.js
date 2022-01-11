@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { ref, onValue, push, remove, update } from 'firebase/database';
 
 import './App.css';
+import ErrorModal from './components/modal/ErrorModal.js';
 
 function App() {
   const [userInput, setUserInput] = useState('');
@@ -21,6 +22,7 @@ function App() {
 
   const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(new Date());
+  const [errorState, setErrorState] = useState();
 
   // grab all current and previous user data list from firebase and push into setInputList() and completedListAll.
   useEffect(() => {
@@ -56,7 +58,12 @@ function App() {
   const addingList = (e) => {
     e.preventDefault();
     if (userInput.trim().length === 0) {
-      alert("Please enter the today's goal");
+
+      setErrorState({
+        title: 'Invaild input',
+        message: "Please enter the today's goal"
+      });
+      return;
     } else {
       const dbRef = ref(realtime, 'currentList');
       const inputData = {
@@ -68,13 +75,17 @@ function App() {
     }
   }
 
+  const resetErrorState = () => {
+    setErrorState(null);
+  }
+
   // Check if the user has inputList any value, and push to Firebase prvList.
   const addFullList = (userComment) => {
     const currentDate = new Date().toISOString().split('T')[0];
     const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
     if (inputList.trim().length === 0) {
-      alert("You haven't even started yet")
+      return;
     } else {
       let newObj = inputList.reduce((prev, curr) => {
         prev[curr.key] = {
@@ -119,6 +130,12 @@ function App() {
 
   return (
     <div className="content-wrap">
+      {errorState && <ErrorModal
+        title={errorState.title}
+        message={errorState.message}
+        onErrorHandler={resetErrorState}
+
+      />}
       <header className="wrapper">
         <h1>Daily Log</h1>
       </header>
@@ -141,6 +158,7 @@ function App() {
           completedList={completedList}
           delList={delList}
           setOpenModal={setOpenModal}
+          setErrorState={setErrorState}
         />
 
         <Calendar

@@ -1,14 +1,15 @@
 import currentListStyle from './CurrentListStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-// import delBtnSvg from '../../image/group-5.svg';
-// import completedBtnSvg from '../../image/ellipse-3.svg'
 
-const CurrentList = ({ inputList, completedList, delList, setOpenModal }) => {
+const CurrentList = ({ inputList, completedList, delList, setOpenModal, setErrorState }) => {
 
   const handleShowModal = () => {
     if (inputList.length === 0) {
-      alert('There is no data to submit.')
+      setErrorState({
+        title: 'Invaild input',
+        message: "You haven't even started yet :("
+      });
     } else {
       setOpenModal(true)
     }
