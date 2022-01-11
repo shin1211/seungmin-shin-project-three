@@ -24,7 +24,6 @@ const ErrorModal = ({ title, message, onErrorHandler }) => {
             title={title}
             message={message}
             onErrorHandler={onErrorHandler}
-
         />, document.getElementById('overlay-root'))}
     </>
 };

@@ -84,7 +84,7 @@ function App() {
     const currentDate = new Date().toISOString().split('T')[0];
     const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
-    if (inputList.trim().length === 0) {
+    if (userComment.trim().length === 0) {
       return;
     } else {
       let newObj = inputList.reduce((prev, curr) => {
@@ -143,6 +143,7 @@ function App() {
         <Modal
           setOpenModal={setOpenModal}
           addFullList={addFullList}
+          setErrorState={setErrorState}
         />
       )}
       <MainContainer>
