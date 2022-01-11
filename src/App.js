@@ -55,7 +55,9 @@ function App() {
   // Check if the user has input any value, and push to Firebase currentList.
   const addingList = (e) => {
     e.preventDefault();
-    if (userInput) {
+    if (userInput.trim().length === 0) {
+      alert("Please enter the today's goal");
+    } else {
       const dbRef = ref(realtime, 'currentList');
       const inputData = {
         toDo: userInput,
@@ -63,8 +65,6 @@ function App() {
       }
       push(dbRef, inputData);
       setUserInput('');
-    } else {
-      alert("Please enter the today's goal");
     }
   }
 
@@ -73,10 +73,9 @@ function App() {
     const currentDate = new Date().toISOString().split('T')[0];
     const prvList = ref(realtime, 'prvList/' + currentDate);
     const currentList = ref(realtime, 'currentList');
-    if (inputList.length === 0) {
+    if (inputList.trim().length === 0) {
       alert("You haven't even started yet")
     } else {
-
       let newObj = inputList.reduce((prev, curr) => {
         prev[curr.key] = {
           toDo: curr.toDo,
