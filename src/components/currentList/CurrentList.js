@@ -1,12 +1,15 @@
 import currentListStyle from './CurrentListStyle.module.css';
-import delBtnSvg from '../../image/group-5.svg';
-import completedBtnSvg from '../../image/ellipse-3.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const CurrentList = ({ inputList, completedList, delList, setOpenModal }) => {
+const CurrentList = ({ inputList, completedList, delList, setOpenModal, setErrorState }) => {
 
   const handleShowModal = () => {
     if (inputList.length === 0) {
-      alert('There is no data to submit.')
+      setErrorState({
+        title: 'Invaild input',
+        message: "You haven't even started yet :("
+      });
     } else {
       setOpenModal(true)
     }
@@ -29,11 +32,11 @@ const CurrentList = ({ inputList, completedList, delList, setOpenModal }) => {
                 <div className={currentListStyle["btn-container"]}>
                   <button onClick={() => completedList(res.key, res.isCompleted)}>
                     <span className="sr-only">Completed</span>
-                    <img src={completedBtnSvg} alt="" />
+                    <FontAwesomeIcon icon={faCheck} />
                   </button>
                   <button onClick={() => delList(res.key)}>
                     <span className="sr-only">Delete</span>
-                    <img src={delBtnSvg} alt="" />
+                    <FontAwesomeIcon icon={faTimes} />
                   </button>
                 </div>
               </li >

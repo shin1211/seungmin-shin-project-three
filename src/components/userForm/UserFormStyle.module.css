@@ -9,13 +9,28 @@
   padding: 0.5rem;
   width: 100%;
   height: 2.5rem;
-  border-radius: 10px;
+  border-radius: 50px;
 }
 
 .form-button {
   position: absolute;
-  padding: 0.5rem;
-  transform: translateX(-40px) translateY(5px);
+  top: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
   border-style: none;
+  border-radius: 50px;
+  transition: all 0.5s ease-in-out;
   background-color: #d5d5d5;
+  font-weight: lighter;
+  color: #707070;
+  /* transform: translateX(-50px); */
+}
+
+.form-button:hover,
+.form-button:focus,
+.form-button:active {
+  /* transform: translateX(-50px) translateY(0); */
+  background-color: orangered;
+  color: white;
 }

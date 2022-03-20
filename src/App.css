@@ -310,7 +310,7 @@ p.none-data {
 }
 
 li.completed {
-  text-decoration: line-through;
+  text-decoration: solid line-through orangered 2px;
 }
 
 button {
