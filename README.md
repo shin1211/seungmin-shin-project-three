@@ -17,5 +17,5 @@ Those red dots are represented for the user's previous activities.
 
 ![](src/image/image-2.png)
 
-When a user clicks a date with a red dot, they can see their activities for that specific date and check what was completed or not and comments.
+When a user clicks a date with a red dot, they can see their activities for that specific date and check what was completed (styled with strikethrough) or not and comments.
 
