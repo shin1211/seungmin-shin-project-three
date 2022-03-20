@@ -10,4 +10,9 @@ This is a CRUD application where users can utilize it to record their daily acti
 
 Built by using HTML CSS React and Firebase.
 
+
 ![](src/image/image-1.png)
+Those red dots are represented for the user's previous activities. 
+
+![](src/image/image-2.png)
+
